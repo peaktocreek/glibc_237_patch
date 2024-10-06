@@ -1,0 +1,17 @@
+b/320487146: coreboot-sdk's toolchain is too old to support relr sections; add
+a minimal bit of logic so that we can disable this feature through the
+environment.
+
+diff --git a/configure b/configure
+index ccdc539..38d3a09 100755
+--- a/configure
++++ b/configure
+@@ -5818,7 +5818,7 @@ then
+       | grep "warning: -z pack-relative-relocs ignored" > /dev/null 2>&1; then
+     true
+   else
+-    libc_linker_feature=yes
++    [[ -z "${cros_force_disable_relr:-}" ]] && libc_linker_feature=yes
+   fi
+ fi
+ rm -f conftest*
